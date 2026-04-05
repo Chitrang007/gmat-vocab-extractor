@@ -51,7 +51,10 @@ func main() {
 	})
 
 	handler := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://localhost:5173"},
+		AllowedOrigins: []string{
+			"http://localhost:5173",
+			"https://vocabrium.vercel.app",
+		},
 		AllowedMethods: []string{"GET", "POST"},
 		AllowedHeaders: []string{"Content-Type"},
 	}).Handler(mux)
