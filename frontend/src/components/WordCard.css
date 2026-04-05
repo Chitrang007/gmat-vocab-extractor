@@ -1,0 +1,133 @@
+:root {
+  --primary-color: #3b82f6;
+  --primary-hover: #60a5fa;
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
+  --text-light: #d1d5db;
+  --border-light: #374151;
+  --card-bg: #1f2937;
+}
+
+.word-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+  transition: transform 0.2s ease;
+}
+
+.word-card:hover {
+  transform: translateY(-2px);
+}
+
+.word-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 16px;
+}
+
+.word-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.word-pos {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-light);
+  text-transform: lowercase;
+}
+
+.word-definition {
+  font-size: 16px;
+  color: var(--text-main);
+  line-height: 1.5;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.word-context {
+  font-size: 15px;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.5;
+  margin: 12px 0;
+  border-left: 3px solid #4b5563;
+  padding-left: 12px;
+}
+
+.word-synonyms {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 12px 0;
+  text-align: center;
+}
+
+.word-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  border-top: 1px solid var(--border-light);
+  padding-top: 16px;
+}
+
+.difficulty-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.difficulty-hard {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+.difficulty-medium {
+  background: #78350f;
+  color: #fcd34d;
+}
+
+.difficulty-easy {
+  background: #14532d;
+  color: #86efac;
+}
+
+.save-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid var(--primary-color);
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.save-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.save-btn.saved {
+  background: #14532d;
+  border: 1px solid #22c55e;
+  color: #4ade80;
+  cursor: default;
+}

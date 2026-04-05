@@ -1,0 +1,58 @@
+.passage-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.passage-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 16px;
+  color: #f9fafb;
+  line-height: 1.6;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.passage-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.passage-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.extract-btn {
+  align-self: center;
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.extract-btn:hover:not(:disabled) {
+  background-color: #60a5fa;
+}
+
+.extract-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.extract-btn:disabled {
+  background-color: #374151;
+  color: #6b7280;
+  cursor: not-allowed;
+}
