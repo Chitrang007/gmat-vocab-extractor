@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { saveWord } from "../api/index"
+import { speak } from "../utils/speech"
 import "./WordCard.css"
 
 function WordCard({ word, alreadySaved = false, onSave }) {
@@ -24,6 +25,7 @@ function WordCard({ word, alreadySaved = false, onSave }) {
     <div className="word-card">
       <div className="word-card-header">
         <h2 className="word-title">{word.word}</h2>
+        <button className="speak-btn" onClick={() => speak(word.word)}>🔊</button>
         <span className="word-pos">{word.partOfSpeech}</span>
       </div>
       <p className="word-definition">{word.definition}</p>
