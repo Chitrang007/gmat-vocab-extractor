@@ -17,17 +17,21 @@
 .wordbank-header h2 {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #e2e8f0;
   margin: 0;
   display: flex;
   align-items: center;
   gap: 10px;
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .word-count {
   font-size: 13px;
   color: #64748b;
   font-weight: 400;
+  -webkit-text-fill-color: #64748b;
 }
 
 .close-btn {
