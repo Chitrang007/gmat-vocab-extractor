@@ -6,6 +6,7 @@ import WordCard from './components/WordCard'
 import WordBank from './components/WordBank'
 import { extractWords, getWords } from './api/index'
 import './App.css'
+import Quiz from './components/Quiz'
 
 function App() {
   const [words, setWords] = useState([])
@@ -98,7 +99,7 @@ function App() {
             <h2>Quiz Mode</h2>
             <button className="back-btn" onClick={() => navigate('/')}>Back</button>
           </div>
-          <p style={{ color: '#64748b', textAlign: 'center', marginTop: '3rem' }}>Coming soon...</p>
+          <Quiz onBack={() => navigate('/')} />
         </div>
       } />
     </Routes>
