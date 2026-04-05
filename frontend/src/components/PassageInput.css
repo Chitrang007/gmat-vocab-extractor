@@ -8,12 +8,12 @@
 .passage-textarea {
   width: 100%;
   box-sizing: border-box;
-  background-color: #1f2937;
-  border: 1px solid #374151;
-  border-radius: 8px;
+  background: #0d1117;
+  border: 1px solid #1e2d40;
+  border-radius: 10px;
   padding: 16px;
-  font-size: 16px;
-  color: #f9fafb;
+  font-size: 15px;
+  color: #e2e8f0;
   line-height: 1.6;
   resize: vertical;
   font-family: inherit;
@@ -21,30 +21,32 @@
 }
 
 .passage-textarea::placeholder {
-  color: #9ca3af;
+  color: #374151;
 }
 
 .passage-textarea:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  border-color: #2d5a8e;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
 }
 
 .extract-btn {
   align-self: center;
-  padding: 12px 28px;
-  font-size: 16px;
+  padding: 11px 32px;
+  font-size: 15px;
   font-weight: 600;
   color: white;
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6, #7c3aed);
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .extract-btn:hover:not(:disabled) {
-  background-color: #60a5fa;
+  opacity: 0.88;
 }
 
 .extract-btn:active:not(:disabled) {
@@ -52,7 +54,7 @@
 }
 
 .extract-btn:disabled {
-  background-color: #374151;
-  color: #6b7280;
+  background: #1e2d40;
+  color: #374151;
   cursor: not-allowed;
 }

@@ -1,23 +1,23 @@
-:root {
-  --primary-color: #3b82f6;
-  --primary-hover: #60a5fa;
-  --text-main: #f9fafb;
-  --text-muted: #9ca3af;
-  --text-light: #d1d5db;
-  --border-light: #374151;
-  --card-bg: #1f2937;
+.word-card {
+  background: #0d1117;
+  border: 1px solid #1e2d40;
+  border-radius: 12px;
+  padding: 20px 24px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.word-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-light);
-  border-radius: 8px;
-  padding: 16px;
-  margin: 12px 0;
-  transition: transform 0.2s ease;
+.word-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(96,165,250,0.3), transparent);
 }
 
 .word-card:hover {
+  border-color: #2d4a6e;
   transform: translateY(-2px);
 }
 
@@ -25,49 +25,54 @@
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 16px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--border-light);
+  gap: 12px;
+  margin-bottom: 20px;
   padding-bottom: 16px;
+  border-bottom: 1px solid #131d2a;
 }
 
 .word-title {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
-  color: var(--text-main);
+  color: #e2e8f0;
   margin: 0;
   letter-spacing: -0.5px;
 }
 
 .word-pos {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--text-light);
+  color: #60a5fa;
+  background: #0d1f35;
+  border: 1px solid #1e3a5f;
+  padding: 2px 8px;
+  border-radius: 999px;
   text-transform: lowercase;
 }
 
 .word-definition {
-  font-size: 16px;
-  color: var(--text-main);
-  line-height: 1.5;
-  margin: 12px 0;
+  font-size: 15px;
+  color: #e2e8f0;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
   text-align: center;
 }
 
 .word-context {
-  font-size: 15px;
-  color: var(--text-muted);
+  font-size: 14px;
+  color: #94a3b8;
   font-style: italic;
-  line-height: 1.5;
-  margin: 12px 0;
-  border-left: 3px solid #4b5563;
-  padding-left: 12px;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+  border-left: 2px solid #1e3a5f;
+  padding-left: 14px;
+  border-radius: 0;
 }
 
 .word-synonyms {
-  font-size: 14px;
-  color: var(--text-muted);
-  margin: 12px 0;
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 4px 0;
   text-align: center;
 }
 
@@ -75,50 +80,54 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 20px;
-  border-top: 1px solid var(--border-light);
+  margin-top: 18px;
   padding-top: 16px;
+  border-top: 1px solid #131d2a;
 }
 
 .difficulty-badge {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  padding: 4px 10px;
+  padding: 3px 10px;
   border-radius: 999px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 .difficulty-hard {
-  background: #7f1d1d;
-  color: #fca5a5;
+  background: #1a0a0a;
+  color: #f87171;
+  border: 1px solid #7f1d1d;
 }
 
 .difficulty-medium {
-  background: #78350f;
-  color: #fcd34d;
+  background: #1a1200;
+  color: #fbbf24;
+  border: 1px solid #78350f;
 }
 
 .difficulty-easy {
-  background: #14532d;
-  color: #86efac;
+  background: #0a1a0f;
+  color: #4ade80;
+  border: 1px solid #14532d;
 }
 
 .save-btn {
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: 7px 18px;
+  font-size: 13px;
   font-weight: 600;
-  border-radius: 6px;
-  border: 1px solid var(--primary-color);
-  background: var(--primary-color);
-  color: white;
+  border-radius: 7px;
+  border: 1px solid #1e3a5f;
+  background: #0d1f35;
+  color: #60a5fa;
   cursor: pointer;
+  font-family: inherit;
   transition: all 0.2s ease;
 }
 
 .save-btn:hover:not(:disabled) {
-  background: var(--primary-hover);
-  border-color: var(--primary-hover);
+  background: #102644;
+  border-color: #2d5a8e;
 }
 
 .save-btn:active:not(:disabled) {
@@ -126,8 +135,27 @@
 }
 
 .save-btn.saved {
-  background: #14532d;
-  border: 1px solid #22c55e;
+  background: #0a1a0f;
+  border: 1px solid #14532d;
   color: #4ade80;
   cursor: default;
+}
+
+.save-btn:disabled {
+  opacity: 0.6;
+}
+
+.speak-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  line-height: 1;
+}
+
+.speak-btn:hover {
+  background: #1e2d40;
 }
