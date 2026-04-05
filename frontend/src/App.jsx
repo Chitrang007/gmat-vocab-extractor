@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
+import Home from './components/Home'
 import PassageInput from './components/PassageInput'
 import WordCard from './components/WordCard'
 import WordBank from './components/WordBank'
@@ -46,14 +47,16 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={
+        <Home savedWordsCount={savedWords.length} />
+      } />
+
+      <Route path="/extract" element={
         <div className="app-container">
-          <header className="app-header">
-            <h1>GMAT Vocab Extractor</h1>
-            <p className="app-subtitle">Paste a reading comprehension passage to extract advanced vocabulary.</p>
-            <button className="wordbank-btn" onClick={() => navigate('/word-bank')}>
-              My Word Bank ({savedWords.length})
-            </button>
-          </header>
+          <div className="page-nav">
+            <h2>Extract Words</h2>
+            <button className="back-btn" onClick={() => navigate('/')}>Back</button>
+          </div>
+          <p className="app-subtitle">Paste a passage to extract vocabulary for better understanding.</p>
           <main className="app-main">
             <PassageInput onExtract={handleExtract} loading={loading} />
             {error && (
@@ -81,11 +84,22 @@ function App() {
           </main>
         </div>
       } />
+
       <Route path="/word-bank" element={
         <WordBank
           words={savedWordObjects}
           onClose={() => navigate('/')}
         />
+      } />
+
+      <Route path="/quiz" element={
+        <div className="app-container">
+          <div className="page-nav">
+            <h2>Quiz Mode</h2>
+            <button className="back-btn" onClick={() => navigate('/')}>Back</button>
+          </div>
+          <p style={{ color: '#64748b', textAlign: 'center', marginTop: '3rem' }}>Coming soon...</p>
+        </div>
       } />
     </Routes>
   )
