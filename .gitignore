@@ -1,0 +1,10 @@
+# env files
+backend/.env
+frontend/.env
+
+# Go executables
+backend/*.exe
+
+# OS
+.DS_Store
+Thumbs.db
