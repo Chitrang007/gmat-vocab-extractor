@@ -1,32 +1,44 @@
-function WordCard({ word }) {
+import { useState } from "react"
+import { saveWord } from "../api/index"
+import "./WordCard.css"
+
+function WordCard({ word, alreadySaved = false, onSave }) {
+  const [saving, setSaving] = useState(false)
+
+  const handleSave = async () => {
+    setSaving(true)
+    try {
+      await saveWord(word)
+      onSave(word)
+    } catch (err) {
+      console.log(err)
+      alert('Failed to save word')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const difficultyClass = `difficulty-badge difficulty-${word.difficulty}`
+
   return (
-    <div style={{
-      border: '1px solid #ddd',
-      borderRadius: '8px',
-      padding: '16px',
-      margin: '12px 0'
-    }}>
-      <h2 style={{ margin: '0 0 6px' }}>{word.word}
-        <span style={{ fontSize: '13px', color: '#888', marginLeft: '10px' }}>
-          {word.partOfSpeech}
-        </span>
-      </h2>
-      <p style={{ margin: '4px 0' }}>{word.definition}</p>
-      <p style={{ color: '#555', fontStyle: 'italic', margin: '4px 0' }}>
-        "{word.contextSentence}"
-      </p>
-      <p style={{ margin: '4px 0', color: '#444' }}>
-        Synonyms: {word.synonyms?.join(', ')}
-      </p>
-      <span style={{
-        fontSize: '12px',
-        padding: '2px 8px',
-        borderRadius: '4px',
-        background: word.difficulty === 'hard' ? '#fee' : word.difficulty === 'medium' ? '#fff8e1' : '#e8f5e9',
-        color: word.difficulty === 'hard' ? '#c00' : word.difficulty === 'medium' ? '#795' : '#2a2'
-      }}>
-        {word.difficulty}
-      </span>
+    <div className="word-card">
+      <div className="word-card-header">
+        <h2 className="word-title">{word.word}</h2>
+        <span className="word-pos">{word.partOfSpeech}</span>
+      </div>
+      <p className="word-definition">{word.definition}</p>
+      <p className="word-context">"{word.contextSentence}"</p>
+      <p className="word-synonyms">Synonyms: {word.synonyms?.join(', ')}</p>
+      <div className="word-card-footer">
+        <span className={difficultyClass}>{word.difficulty}</span>
+        <button
+          onClick={handleSave}
+          disabled={alreadySaved || saving}
+          className={`save-btn ${alreadySaved ? 'saved' : ''}`}
+        >
+          {alreadySaved ? 'Saved!' : saving ? 'Saving...' : 'Save Word'}
+        </button>
+      </div>
     </div>
   )
 }

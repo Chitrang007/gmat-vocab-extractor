@@ -5,7 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"io"
 
+	"github.com/Chitrang007/gmat-vocab-extractor/backend/db"
 	"github.com/Chitrang007/gmat-vocab-extractor/backend/handlers"
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
@@ -16,6 +18,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	db.Connect()
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -31,6 +35,19 @@ func main() {
 	})
 
 	mux.HandleFunc("/extract-words", handlers.ExtractWords)
+	mux.HandleFunc("/save-word", handlers.SaveWord)
+	mux.HandleFunc("/get-words", handlers.GetWords)
+
+	mux.HandleFunc("/list-models", func(w http.ResponseWriter, r *http.Request) {
+		apiKey := os.Getenv("GEMINI_API_KEY")
+		resp, err := http.Get("https://generativelanguage.googleapis.com/v1beta/models?key=" + apiKey)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		defer resp.Body.Close()
+		io.Copy(w, resp.Body)
+	})
 
 	handler := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:5173"},
