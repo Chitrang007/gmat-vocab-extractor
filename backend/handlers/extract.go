@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/Chitrang007/gmat-vocab-extractor/backend/models"
 )
@@ -78,28 +79,50 @@ func callGemini(passage string) ([]models.Word, error) {
 	)
 
 	systemPrompt := `You are a vocabulary extraction assistant for a GMAT reading comprehension learning app.
-Your job is to identify words in a passage that are likely unfamiliar to an advanced undergraduate student.
+
+Your task is to identify 10-12 of the most valuable vocabulary words from the passage for GMAT, GRE, and advanced academic reading comprehension preparation.
+
+Prioritize words that:
+- Are useful across many contexts and topics
+- Frequently appear in academic, analytical, scientific, economic, historical, or business writing
+- Help improve reading comprehension and test-prep vocabulary
+- Are meaningfully challenging for an advanced undergraduate student
 
 Do NOT extract:
-- Proper nouns (names, places, brands)
-- Common words (the, and, because, large, small)
-- Technical jargon with no general usage
+- Proper nouns (names, places, brands, organizations)
+- Very common everyday words
+- Technical jargon that has little use outside a specialized field
+- Hyphenated expressions or compound phrases unless they are widely recognized advanced vocabulary terms
+- Words whose difficulty depends only on the passage context rather than general vocabulary value
 
-Always return a valid JSON array. No markdown, no explanation, no preamble.
-Return exactly the JSON — nothing before it, nothing after it.`
+For each word, return an object with:
 
-	userPrompt := fmt.Sprintf(`Extract 5-8 vocabulary words from the passage below.
-
-For each word return:
-- word: the base form (e.g. "exacerbate" not "exacerbated")
-- definition: one clear sentence written for a test-prep student
-- contextSentence: the exact sentence from the passage where the word appears
-- synonyms: array of 3 related words
-- difficulty: one of "easy", "medium", "hard"
+- word: the base form of the word
+- definition: a clear, concise definition written for a test-prep student
+- contextSentence: a short, simple, easy-to-understand example sentence that YOU create
+- synonyms: exactly 3 relevant synonyms
+- difficulty: "easy", "medium", or "hard"
 - partOfSpeech: "noun", "verb", "adjective", or "adverb"
 
-Return format example:
-[{"word":"exacerbate","definition":"To make a problem worse.","contextSentence":"The drought exacerbated food shortages.","synonyms":["worsen","aggravate","intensify"],"difficulty":"hard","partOfSpeech":"verb"}]
+STRICT RULES:
+- Extract only the most useful 10-12 vocabulary words from the passage
+- Prefer single-word vocabulary items
+- NEVER copy, quote, or reuse a sentence from the passage
+- contextSentence must always be newly generated
+- contextSentence should be short, natural, and easy to understand
+- Avoid academic, complex, or lengthy example sentences
+- Definitions should be accurate but simple
+- Synonyms should closely match the word's meaning
+- Output ONLY a valid JSON array
+- No markdown
+- No explanations
+- No introductory text
+- No trailing comments`
+
+	userPrompt := fmt.Sprintf(`Extract vocabulary words from the passage.
+
+Return format:
+[{"word":"","definition":"","contextSentence":"","synonyms":[],"difficulty":"","partOfSpeech":""}]
 
 Passage:
 """
@@ -114,34 +137,52 @@ Passage:
 			{"parts": []map[string]string{{"text": userPrompt}}},
 		},
 		"generation_config": map[string]interface{}{
-			"temperature": 0.3,
+			"temperature": 0.2,
 		},
 	}
 
-	bodyBytes, _ := json.Marshal(reqBody)
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(bodyBytes))
+	bodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		return nil, err
+	}
+
+	client := &http.Client{Timeout: 45 * time.Second}
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(bodyBytes))
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
-	respBytes, _ := io.ReadAll(resp.Body)
-	log.Println("Gemini raw response:", string(respBytes))
+	respBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("gemini api error: %s", string(respBytes))
+	}
 
 	var gemResp geminiResponse
 	if err := json.Unmarshal(respBytes, &gemResp); err != nil {
 		return nil, err
 	}
 
-	if len(gemResp.Candidates) == 0 {
-		return nil, fmt.Errorf("no candidates returned from gemini")
+	if len(gemResp.Candidates) == 0 ||
+		len(gemResp.Candidates[0].Content.Parts) == 0 {
+		return nil, fmt.Errorf("invalid gemini response structure")
 	}
 
-	raw := gemResp.Candidates[0].Content.Parts[0].Text
-	raw = strings.TrimSpace(raw)
-	raw = strings.TrimPrefix(raw, "```json")
-	raw = strings.TrimPrefix(raw, "```")
-	raw = strings.TrimSuffix(raw, "```")
+	raw := strings.TrimSpace(gemResp.Candidates[0].Content.Parts[0].Text)
+	raw = strings.Trim(raw, "`")
+	raw = strings.TrimPrefix(raw, "json")
 	raw = strings.TrimSpace(raw)
 
 	var words []models.Word
