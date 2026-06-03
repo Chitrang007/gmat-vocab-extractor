@@ -7,6 +7,9 @@ import WordBank from './components/WordBank'
 import { extractWords, getWords } from './api/index'
 import './App.css'
 import Quiz from './components/Quiz'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import './components/PassageInput.css'
 
 function App() {
   const [words, setWords] = useState([])
@@ -60,6 +63,7 @@ function App() {
           <p className="app-subtitle">Paste a passage to extract vocabulary for better understanding.</p>
           <main className="app-main">
             <PassageInput onExtract={handleExtract} loading={loading} />
+            <ToastContainer />
             {error && (
               <div className="error-banner">
                 <span className="error-icon">⚠️</span>

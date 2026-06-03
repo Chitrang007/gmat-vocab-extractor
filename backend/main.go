@@ -38,6 +38,7 @@ func main() {
 	mux.HandleFunc("/save-word", handlers.SaveWord)
 	mux.HandleFunc("/get-words", handlers.GetWords)
 	mux.HandleFunc("/quiz", handlers.GetQuiz)
+	mux.HandleFunc("/api/passages", handlers.SavePassage(db.Client))
 
 	mux.HandleFunc("/list-models", func(w http.ResponseWriter, r *http.Request) {
 		apiKey := os.Getenv("GEMINI_API_KEY")
