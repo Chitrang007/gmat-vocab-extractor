@@ -6,10 +6,11 @@ import WordCard from './components/WordCard'
 import WordBank from './components/WordBank'
 import { extractWords, getWords } from './api/index'
 import './App.css'
-import Quiz from './components/Quiz'
+import QuizMenu from './components/Quiz'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import './components/PassageInput.css'
+import MultiChoice from './components/MultiChoice'
 
 function App() {
   const [words, setWords] = useState([])
@@ -103,7 +104,33 @@ function App() {
             <h2>Quiz Mode</h2>
             <button className="back-btn" onClick={() => navigate('/')}>Back</button>
           </div>
-          <Quiz onBack={() => navigate('/')} />
+          <QuizMenu />
+        </div>
+      } />
+
+      <Route path="/quiz/multi-choice" element={
+        <div className="app-container">
+          <div className="page-nav">
+            <h2>Multiple Choice</h2>
+            <button className="back-btn" onClick={() => navigate('/quiz')}>Back</button>
+          </div>
+          <MultiChoice />
+        </div>
+      } />
+
+      <Route path="/quiz/*" element={
+        <div className="app-container">
+          <div className="page-nav">
+            <h2>Coming Soon</h2>
+            <button className="back-btn" onClick={() => navigate('/quiz')}>Back</button>
+          </div>
+          <div className="quiz-finished">
+            <h2>Under Construction 🚧</h2>
+            <p className="quiz-status" style= {{ marginTop: "1rem"}}>
+              This game mode is currently being built. Stick to Classic Multiple Choice for now!
+            </p>
+            <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3QyaWRwYm1wOXJ1d3NlZWd3MGQydjhvenI2NGJlcHQ4MngwcGs1byZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ruyS8Zw9sBqE5UjOnY/giphy.webp" alt="Failure" className="result-gif" />
+          </div>
         </div>
       } />
     </Routes>

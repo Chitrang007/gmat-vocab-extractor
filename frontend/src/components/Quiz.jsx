@@ -1,117 +1,60 @@
-import { useState, useEffect } from 'react'
-import { getQuiz } from '../api/index'
-import './Quiz.css'
+import { useNavigate } from "react-router-dom";
+import "./Quiz.css";
 
-function Quiz({ onBack }) {
-  const [questions, setQuestions] = useState([])
-  const [current, setCurrent] = useState(0)
-  const [selected, setSelected] = useState(null)
-  const [score, setScore] = useState(0)
-  const [finished, setFinished] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    getQuiz()
-      .then(data => {
-        setQuestions(data)
-        setLoading(false)
-      })
-      .catch(err => {
-        setError('Need at least 4 saved words to start the quiz.')
-        console.log(err)
-        setLoading(false)
-      })
-  }, [])
-
-  const handleSelect = (option) => {
-    if (selected) return
-    setSelected(option)
-    if (option === questions[current].answer) {
-      setScore(prev => prev + 1)
-    }
-  }
-
-  const handleNext = () => {
-    if (current + 1 >= questions.length) {
-      setFinished(true)
-    } else {
-      setCurrent(prev => prev + 1)
-      setSelected(null)
-    }
-  }
-
-  const handleRestart = () => {
-    setCurrent(0)
-    setSelected(null)
-    setScore(0)
-    setFinished(false)
-  }
-
-  if (loading) return <p className="quiz-status">Loading quiz...</p>
-  if (error) return <p className="quiz-status">{error}</p>
-
-  const isPerfect = score === questions.length
-
-  if (finished) {
-    return (
-      <div className="quiz-finished">
-        <h2>Quiz Complete</h2>
-        <p className={`quiz-score ${isPerfect ? 'perfect' : ''}`}>
-          {score} / {questions.length}
-        </p>
-        <p className={`quiz-score-label ${isPerfect ? 'perfect' : ''}`}>
-          {isPerfect ? 'Perfect score!' : score >= questions.length / 2 ? 'Good job!' : 'Keep practicing!'}
-        </p>
-        <div className="quiz-finished-btns">
-          <button className="back-btn" onClick={handleRestart}>Try Again</button>
-          <button className="back-btn" onClick={onBack}>Back to Home</button>
-        </div>
-      </div>
-    )
-  }
-
-  const q = questions[current]
+function QuizMenu() {
+  const navigate = useNavigate();
 
   return (
-    <div className="quiz-container">
-      <div className="quiz-progress">
-        <span>{current + 1} / {questions.length}</span>
-        <span>Score: {score}</span>
+    <div className="quiz-menu-container">
+      <div className="quiz-menu-header">
+        <h2>Training Modes</h2>
+        <p>Select a specialized drill to test your vocabulary.</p>
       </div>
 
-      <div className="quiz-card">
-        <p className="quiz-sentence">{q.sentence}</p>
-        <p className="quiz-hint">{q.definition}</p>
-      </div>
-
-      <div className="quiz-options">
-        {q.options.map((option, i) => {
-          let className = 'quiz-option'
-          if (selected) {
-            if (option === q.answer) className += ' correct'
-            else if (option === selected) className += ' wrong'
-          }
-          return (
-            <button
-              key={i}
-              className={className}
-              onClick={() => handleSelect(option)}
-              disabled={!!selected}
-            >
-              {option}
-            </button>
-          )
-        })}
-      </div>
-
-      {selected && (
-        <button className="quiz-next-btn" onClick={handleNext}>
-          {current + 1 >= questions.length ? 'See Results' : 'Next →'}
+      <div className="quiz-menu-grid">
+        {/* Notice how these now use navigate() with the specific URL path */}
+        <button 
+          className="menu-mode-btn" 
+          onClick={() => navigate("/quiz/multi-choice")}
+        >
+          <h3>Classic Multiple Choice</h3>
+          <p>Test your fundamental definition recall.</p>
         </button>
-      )}
+        
+        <button 
+          className="menu-mode-btn" 
+          onClick={() => navigate("/quiz/fill-in-the-blank")}
+        >
+          <h3>Fill in the Blank</h3>
+          <p>Master contextual usage in complex sentences.</p>
+        </button>
+        
+        <button 
+          className="menu-mode-btn" 
+          onClick={() => navigate("/quiz/synonym-antonym")}
+        >
+          <h3>Synonym & Antonym</h3>
+          <p>Build lateral word associations.</p>
+        </button>
+        
+        <button 
+          className="menu-mode-btn" 
+          onClick={() => navigate("/quiz/speed")}
+        >
+          <h3>Speed Run</h3>
+          <p>60 seconds. Lightning-fast recall.</p>
+        </button>
+        
+        <button 
+          className="menu-mode-btn" 
+          onClick={() => navigate("/quiz/weakness")}
+        >
+          <h3>Weakness Drill</h3>
+          <p>Confront the words you miss the most.</p>
+        </button>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Quiz
+export default QuizMenu;
