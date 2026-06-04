@@ -152,7 +152,7 @@ function Synonym_Antonym() {
         </p>
         <div className="quiz-finished-btns">
           <button className="back-btn" onClick={handleRestart}>Try Again</button>
-          <button className="back-btn" onClick={() => navigate("/quiz")}>Back to Menu</button>
+          <button className="back-btn" onClick={() => navigate("/quiz")}>Back to Quiz Menu</button>
         </div>
       </div>
     );

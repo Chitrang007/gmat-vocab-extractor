@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import './components/PassageInput.css'
 import MultiChoice from './components/MultiChoice'
 import Synonym_Antonym from './components/SynonymAnotnym'
+import FillInTheBlank from './components/FillInTheBlank'
 
 function App() {
   const [words, setWords] = useState([])
@@ -126,6 +127,16 @@ function App() {
             <button className="back-btn" onClick={() => navigate('/quiz')}>Back</button>
           </div>
           <Synonym_Antonym />
+        </div>
+      } />
+
+      <Route path="/quiz/fill-in-the-blank" element={
+        <div className="app-container">
+          <div className="page-nav">
+            <h2>Fill in the Blank</h2>
+            <button className="back-btn" onClick={() => navigate('/quiz')}>Back</button>
+          </div>
+          <FillInTheBlank />
         </div>
       } />
 
