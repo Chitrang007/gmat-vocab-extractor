@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { getMultiChoiceQuiz } from "../api/index";
-import "./QuizMenu.css";
 import { useNavigate } from "react-router-dom";
+import {getWords } from "../api/index";
+import "./QuizMenu.css";
 
 const MAX_QUESTIONS = 10;
 
@@ -14,7 +14,7 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
-function MultiChoice() {
+function Synonym_Antonym() {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [current, setCurrent] = useState(0);
@@ -53,20 +53,46 @@ function MultiChoice() {
   }, [current, questions.length, score]);
 
   useEffect(() => {
-    getMultiChoiceQuiz()
+    getWords()
       .then((data) => {
-        const shuffledBank = shuffleArray(data);
+        const validData = data.filter(w => 
+          w.synonyms && w.synonyms.length > 0 && 
+          w.antonyms && w.antonyms.length > 0
+        );
+        
+        if (validData.length < 4) {
+          throw new Error("Need at least 4 words with synonyms & antonyms.");
+        }
+
+        const shuffledBank = shuffleArray(validData);
         const selectedQuestions = shuffledBank.slice(0, MAX_QUESTIONS);
 
-        const randomizedData = selectedQuestions.map((q) => ({
-          ...q,
-          options: shuffleArray(q.options),
-        }));
-        setQuestions(randomizedData);
+        const matchData = selectedQuestions.map((q) => {
+          const isSynonym = Math.random() > 0.5;
+          const questionType = isSynonym ? "synonym" : "antonym";
+          const correctAnswer = isSynonym ? q.synonyms[0] : q.antonyms[0];
+
+          const wrongOptions = validData
+            .filter(item => item.word !== q.word)
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3)
+            .map(item => isSynonym ? item.synonyms[0] : item.antonyms[0]);
+
+          const allOptions = shuffleArray([correctAnswer, ...wrongOptions]);
+
+          return {
+            ...q,
+            questionType,
+            answer: correctAnswer,
+            options: allOptions
+          };
+        });
+
+        setQuestions(matchData);
         setLoading(false);
       })
       .catch((err) => {
-        setError("Need at least 4 saved words to start the quiz.");
+        setError("Need at least 4 saved words with synonyms & antonyms to start.");
         console.log(err);
         setLoading(false);
       });
@@ -137,15 +163,21 @@ function MultiChoice() {
   return (
     <div className="quiz-container">
       <div className="quiz-progress">
-        <span>
-          {current + 1} / {questions.length}
-        </span>
+        <span>{current + 1} / {questions.length}</span>
         <span>Score: {score}</span>
       </div>
 
       <div className="quiz-card">
-        <p className="quiz-sentence">{q.sentence}</p>
-        <p className="quiz-hint">{q.definition}</p>
+        <p className="quiz-hint" style={{ borderTop: 'none', paddingTop: 0, paddingBottom: '10px', fontSize: '15px' }}>
+          Find the <strong>{q.questionType}</strong> for:
+        </p>
+        <h3 className="quiz-sentence" style={{ fontSize: '28px', fontWeight: 'bold' }}>{q.word}</h3>
+        
+        {selected && (
+          <p className="quiz-hint">
+            <strong>Definition:</strong> {q.definition}
+          </p>
+        )}
       </div>
 
       <div className="quiz-options">
@@ -177,4 +209,4 @@ function MultiChoice() {
   );
 }
 
-export default MultiChoice;
+export default Synonym_Antonym;

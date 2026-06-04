@@ -65,7 +65,7 @@ func GetWords(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(words)
 }
 
-func GetQuiz(w http.ResponseWriter, r *http.Request) {
+func GetMultiChoiceQuiz(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
