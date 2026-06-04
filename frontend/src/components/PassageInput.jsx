@@ -9,10 +9,10 @@ function PassageInput({ onExtract, loading }) {
     if (text.trim().length < 20) return
     onExtract(text)
     
-    const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/'
+    const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080'
 
     try {
-      const response = await fetch(`${backendUrl}api/passages`, {
+      const response = await fetch(`${backendUrl}/api/passages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
