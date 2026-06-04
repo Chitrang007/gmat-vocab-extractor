@@ -6,11 +6,12 @@ import WordCard from './components/WordCard'
 import WordBank from './components/WordBank'
 import { extractWords, getWords } from './api/index'
 import './App.css'
-import QuizMenu from './components/Quiz'
+import QuizMenu from './components/QuizMenu'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import './components/PassageInput.css'
 import MultiChoice from './components/MultiChoice'
+import Synonym_Antonym from './components/SynonymAnotnym'
 
 function App() {
   const [words, setWords] = useState([])
@@ -115,6 +116,16 @@ function App() {
             <button className="back-btn" onClick={() => navigate('/quiz')}>Back</button>
           </div>
           <MultiChoice />
+        </div>
+      } />
+
+      <Route path="/quiz/synonym-antonym" element={
+        <div className="app-container">
+          <div className="page-nav">
+            <h2>Synonym & Antonym</h2>
+            <button className="back-btn" onClick={() => navigate('/quiz')}>Back</button>
+          </div>
+          <Synonym_Antonym />
         </div>
       } />
 

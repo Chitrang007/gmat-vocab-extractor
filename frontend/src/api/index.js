@@ -26,8 +26,8 @@ export async function getWords() {
   return res.json()
 }
 
-export async function getQuiz() {
-  const res = await fetch(`${BASE}/quiz`)
+export async function getMultiChoiceQuiz() {
+  const res = await fetch(`${BASE}/quiz/multi-choice`)
   if (!res.ok) throw new Error('Failed to fetch quiz')
   return res.json()
 }
