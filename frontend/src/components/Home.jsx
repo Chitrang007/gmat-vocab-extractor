@@ -21,7 +21,7 @@ function Home({ savedWordsCount }) {
 
         <div className="home-card" onClick={() => navigate('/word-bank')}>
           <div className="home-card-icon">🗂️</div>
-          <h2>My Word Bank</h2>
+          <h2>Word Bank</h2>
           <p>Review all your saved words, their meanings, and the sentences where you first encountered them.</p>
           <span className="home-card-cta">{savedWordsCount} words saved →</span>
         </div>
