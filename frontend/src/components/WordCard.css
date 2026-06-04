@@ -69,7 +69,8 @@
   border-radius: 0;
 }
 
-.word-synonyms {
+.word-synonyms,
+.word-antonyms {
   font-size: 13px;
   color: #64748b;
   margin: 0 0 4px 0;

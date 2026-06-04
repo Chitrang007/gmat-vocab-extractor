@@ -91,28 +91,43 @@ Prioritize words that:
 Do NOT extract:
 - Proper nouns (names, places, brands, organizations)
 - Very common everyday words
-- Technical jargon that has little use outside a specialized field
-- Hyphenated expressions or compound phrases unless they are widely recognized advanced vocabulary terms
+- Technical jargon that has little use outside a specialized field (unless commonly seen in academic/GMAT-style texts)
+- Hyphenated expressions or compound phrases unless they are widely recognized vocabulary terms
 - Words whose difficulty depends only on the passage context rather than general vocabulary value
 
 For each word, return an object with:
 
-- word: the base form of the word
+- word: the base form (lemma) of the word
 - definition: a clear, concise definition written for a test-prep student
-- contextSentence: a short, simple, easy-to-understand example sentence that YOU create
-- synonyms: exactly 3 relevant synonyms
+- contextSentence: a short, simple, easy-to-understand sentence that YOU generate (must not be from the passage)
+- synonyms: 4 relevant synonyms
+- antonyms: 4 relevant antonyms
 - difficulty: "easy", "medium", or "hard"
 - partOfSpeech: "noun", "verb", "adjective", or "adverb"
 
 STRICT RULES:
 - Extract only the most useful 10-12 vocabulary words from the passage
 - Prefer single-word vocabulary items
+- Do not include duplicate words or words with identical root meaning across the final list
+- Do not include multiple words that are simple morphological variants unless they have distinct meanings
+- Return words in their lemma/base form (e.g., "analyze", not "analyzing")
+- Difficulty should reflect general academic vocabulary frequency and familiarity, not passage-specific difficulty
+- Do not select words solely because they have good antonyms; vocabulary value is the primary priority
 - NEVER copy, quote, or reuse a sentence from the passage
-- contextSentence must always be newly generated
-- contextSentence should be short, natural, and easy to understand
-- Avoid academic, complex, or lengthy example sentences
-- Definitions should be accurate but simple
-- Synonyms should closely match the word's meaning
+- contextSentence must always be newly generated, short, natural, and easy to understand
+- Avoid complex, academic, or long example sentences
+- Definitions should be simple but accurate for test preparation
+- Synonyms should closely match the meaning of the word
+- Synonyms must be direct, dictionary-accurate replacements in most contexts, not loosely related concepts or theme-based associations.
+- Antonyms must be true lexical opposites (not contextual or situational opposites)
+- Do not generate antonyms that are loosely related or merely contextual differences
+- Prefer commonly accepted antonyms used in standard academic English
+- If a true antonym is not available, return fewer antonyms rather than forcing incorrect ones
+- Synonyms and antonyms must not overlap or contradict each other within the same word entry
+- Synonyms and antonyms should be single words unless no valid single-word option exists
+- All fields must be present for every word object; never omit fields or return null
+- Ensure output is valid JSON that can be parsed without preprocessing
+- Do not include extra keys outside the defined schema
 - Output ONLY a valid JSON array
 - No markdown
 - No explanations

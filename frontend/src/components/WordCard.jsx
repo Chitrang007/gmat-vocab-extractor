@@ -31,6 +31,7 @@ function WordCard({ word, alreadySaved = false, onSave }) {
       <p className="word-definition">{word.definition}</p>
       <p className="word-context">"{word.contextSentence}"</p>
       <p className="word-synonyms">Synonyms: {word.synonyms?.join(', ')}</p>
+      <p className="word-antonyms">Antonyms: {word.antonyms?.join(', ')}</p>
       <div className="word-card-footer">
         <span className={difficultyClass}>{word.difficulty}</span>
         <button

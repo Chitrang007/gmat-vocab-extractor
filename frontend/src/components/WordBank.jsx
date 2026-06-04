@@ -6,7 +6,7 @@ function WordBank({ words, onClose }) {
     return (
       <div className="wordbank-container">
         <div className="wordbank-header">
-          <h2>My Word Bank</h2>
+          <h2>Word Bank</h2>
           <button className="close-btn" onClick={onClose}>Back</button>
         </div>
         <p className="wordbank-empty">No words saved yet. Extract a passage and save some words!</p>
@@ -17,7 +17,7 @@ function WordBank({ words, onClose }) {
   return (
     <div className="wordbank-container">
       <div className="wordbank-header">
-        <h2>My Word Bank <span className="word-count">{words.length} words</span></h2>
+        <h2>Word Bank <span className="word-count">{words.length} words</span></h2>
         <button className="close-btn" onClick={onClose}>Back</button>
       </div>
       <div className="wordbank-list">
@@ -34,6 +34,7 @@ function WordBank({ words, onClose }) {
             <p className="wordbank-definition">{word.definition}</p>
             <p className="wordbank-context">"{word.contextSentence}"</p>
             <p className="wordbank-synonyms">Synonyms: {word.synonyms?.join(', ')}</p>
+            <p className="wordbank-antonyms">Antonyms: {word.antonyms?.join(', ')}</p>
           </div>
         ))}
       </div>

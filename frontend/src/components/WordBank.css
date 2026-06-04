@@ -122,7 +122,8 @@
   line-height: 1.5;
 }
 
-.wordbank-synonyms {
+.wordbank-synonyms,
+.wordbank-antonyms {
   font-size: 13px;
   color: #64748b;
   margin: 0;
