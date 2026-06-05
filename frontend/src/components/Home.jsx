@@ -7,7 +7,7 @@ function Home({ savedWordsCount }) {
   return (
     <div className="home-container">
       <header className="home-header">
-        <h1>GMAT Vocab Extractor</h1>
+        <h1>Vocabulary Extractor</h1>
         <p className="home-subtitle">Learn vocabulary in context. Built for serious test prep.</p>
       </header>
 
