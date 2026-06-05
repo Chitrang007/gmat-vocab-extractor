@@ -149,7 +149,7 @@ function App() {
           <div className="quiz-finished">
             <h2>Under Construction 🚧</h2>
             <p className="quiz-status" style= {{ marginTop: "1rem"}}>
-              This game mode is currently being built. Stick to Classic Multiple Choice for now!
+              This game mode is currently being built. Try the other working modes for now!
             </p>
             <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3QyaWRwYm1wOXJ1d3NlZWd3MGQydjhvenI2NGJlcHQ4MngwcGs1byZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ruyS8Zw9sBqE5UjOnY/giphy.webp" alt="Failure" className="result-gif" />
           </div>
