@@ -13,6 +13,7 @@ import './components/PassageInput.css'
 import MultiChoice from './components/MultiChoice'
 import Synonym_Antonym from './components/SynonymAnotnym'
 import FillInTheBlank from './components/FillInTheBlank'
+import SpeedRun from './components/SpeedRun'
 
 function App() {
   const [words, setWords] = useState([])
@@ -137,6 +138,16 @@ function App() {
             <button className="back-btn" onClick={() => navigate('/quiz')}>Back</button>
           </div>
           <FillInTheBlank />
+        </div>
+      } />
+      
+      <Route path="/quiz/speed" element={
+        <div className="app-container">
+          <div className="page-nav">
+            <h2>Speed Run</h2>
+            <button className="back-btn" onClick={() => navigate('/quiz')}>Back</button>
+          </div>
+          <SpeedRun />
         </div>
       } />
 
