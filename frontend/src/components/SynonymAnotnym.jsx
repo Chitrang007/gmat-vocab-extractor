@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {getWords } from "../api/index";
+import { evaluateResult } from "../shared/gameResults";
 import "./QuizMenu.css";
 
 const MAX_QUESTIONS = 10;
@@ -23,34 +24,15 @@ function Synonym_Antonym() {
   const [finished, setFinished] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [finalMessage, setFinalMessage] = useState("");
 
   const handleNext = useCallback(() => {
     if (current + 1 >= questions.length) {
       setFinished(true);
-      const ratio = score / questions.length;
-
-      if (ratio === 1) {
-        setFinalMessage("Perfect score!");
-      } else if (ratio >= 0.8) {
-        setFinalMessage("Great job!");
-      } else if (ratio >= 0.5) {
-        setFinalMessage("Keep Practicing!");
-      } else {
-        const roasts = [
-          "Your dictionary is weeping in the corner right now. 😭",
-          "Did you close your eyes while clicking? 👀",
-          "The GMAT algorithm just shed a single tear. 🤖",
-          "Are we guessing? Because it looks like we're guessing. 🎲",
-          "My backend server is judging you. 📉",
-        ];
-        setFinalMessage(roasts[Math.floor(Math.random() * roasts.length)]);
-      }
     } else {
       setCurrent((prev) => prev + 1);
       setSelected(null);
     }
-  }, [current, questions.length, score]);
+  }, [current, questions.length]);
 
   useEffect(() => {
     getWords()
@@ -116,42 +98,43 @@ function Synonym_Antonym() {
     }
   };
 
-  const handleRestart = () => {
-    setCurrent(0);
-    setSelected(null);
-    setScore(0);
-    setFinished(false);
-  };
-
   if (loading) return <p className="quiz-status">Loading quiz...</p>;
   if (error) return <p className="quiz-status">{error}</p>;
+  
   if (questions.length === 0)
     return <p className="quiz-status">Not enough words to generate a quiz.</p>;
 
   const isPerfect = score === questions.length;
 
   if (finished) {
-    const ratio = score / questions.length;
+    const result = evaluateResult(score, questions.length);
+
     return (
       <div className="quiz-finished">
         <h2>Quiz Complete</h2>
-        
-        {ratio < 0.5 && (
-          <img 
-            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2FjYjY0ZDIwYjY0YjY0YjY0YjY0YjY0YjY0YjY0YjY0YjY0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/11ykUODgXjAXZu/giphy.gif" 
-            alt="Disappointed" 
-            style={{ width: '200px', borderRadius: '10px', marginTop: '1rem' }}
+
+        {result.image && (
+          <img
+            src={result.image}
+            alt="Result"
+            style={{
+              width: "220px",
+              borderRadius: "10px",
+              margin: "1rem 0",
+            }}
           />
         )}
 
         <p className={`quiz-score ${isPerfect ? "perfect" : ""}`}>
           {score} / {questions.length}
         </p>
+
         <p className={`quiz-score-label ${isPerfect ? "perfect" : ""}`}>
-          {finalMessage}
+          {result.message}
         </p>
+
         <div className="quiz-finished-btns">
-          <button className="back-btn" onClick={handleRestart}>Try Again</button>
+          <button className="back-btn" onClick={() => window.location.reload()}>Try Again</button>
           <button className="back-btn" onClick={() => navigate("/quiz")}>Back to Quiz Menu</button>
         </div>
       </div>
