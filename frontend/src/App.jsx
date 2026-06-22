@@ -14,6 +14,7 @@ import MultiChoice from './components/MultiChoice'
 import Synonym_Antonym from './components/SynonymAnotnym'
 import FillInTheBlank from './components/FillInTheBlank'
 import SpeedRun from './components/SpeedRun'
+import FlashcardGameScreen from './features/flashcards'
 
 function App() {
   const [words, setWords] = useState([])
@@ -148,6 +149,16 @@ function App() {
             <button className="back-btn" onClick={() => navigate('/quiz')}>Back</button>
           </div>
           <SpeedRun />
+        </div>
+      } />
+
+      <Route path="/quiz/flashcards" element={
+        <div className="app-container">
+          <div className="page-nav">
+            <h2>Flashcards Mode</h2>
+            <button className="back-btn" onClick={() => navigate('/quiz')}>Back</button>
+          </div>
+          <FlashcardGameScreen />
         </div>
       } />
 
