@@ -46,6 +46,14 @@ function QuizMenu() {
         
         <button 
           className="menu-mode-btn" 
+          onClick={() => navigate("/quiz/flashcards")}
+        >
+          <h3>Flashcards Mode 🎙️</h3>
+          <p>Voice-based timed active recall across 5 directions.</p>
+        </button>
+
+        <button 
+          className="menu-mode-btn" 
           onClick={() => navigate("/quiz/weakness")}
         >
           <h3>Weakness Drill 🎯</h3>
