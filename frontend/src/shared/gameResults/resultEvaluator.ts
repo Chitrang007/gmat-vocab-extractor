@@ -12,12 +12,22 @@ export interface GameResult {
   ratio: number
   category: ResultCategory
   message: string
-  image?: string
+  image: string
 }
 
-function getRandomAsset(category: keyof typeof resultAssets) {
-  const assets = resultAssets[category];
-  return assets[Math.floor(Math.random() * assets.length)];
+const gifCounters: Record<string, number> = {}
+
+function getCycledAsset(category: keyof typeof resultAssets, key: string) {
+  const assets = resultAssets[category]
+
+  if (!gifCounters[key]) {
+    gifCounters[key] = 0
+  }
+
+  const index = gifCounters[key] % assets.length
+  gifCounters[key] += 1
+
+  return assets[index]
 }
 
 export function evaluateResult(
@@ -31,7 +41,7 @@ export function evaluateResult(
       ratio,
       category: "perfect",
       message: getPerfectAchievement(),
-      image: getRandomAsset("perfect"),
+      image: getCycledAsset("perfect", "perfect"),
     }
   }
 
@@ -40,7 +50,7 @@ export function evaluateResult(
       ratio,
       category: "great",
       message: getAboveAverageAchievement(),
-      image: getRandomAsset("great"),
+      image: getCycledAsset("great", "great"),
     }
   }
 
@@ -49,7 +59,7 @@ export function evaluateResult(
       ratio,
       category: "average",
       message: getAverageAchievement(),
-      image: getRandomAsset("average"),
+      image: getCycledAsset("average", "average"),
     }
   }
 
@@ -57,6 +67,6 @@ export function evaluateResult(
     ratio,
     category: "roasted",
     message: getRandomRoast(),
-    image: getRandomAsset("roasted"),
+    image: getCycledAsset("roasted", "roasted"),
   }
 }
