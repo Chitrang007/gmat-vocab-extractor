@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import {getWords } from "../api/index";
+import { getWords } from "../api/index";
 import { evaluateResult } from "../shared/gameResults";
 import "./QuizMenu.css";
 
@@ -34,51 +34,64 @@ function Synonym_Antonym() {
     }
   }, [current, questions.length]);
 
-  useEffect(() => {
-    getWords()
-      .then((data) => {
-        const validData = data.filter(w => 
-          w.synonyms && w.synonyms.length > 0 && 
-          w.antonyms && w.antonyms.length > 0
-        );
-        
-        if (validData.length < 4) {
-          throw new Error("Need at least 4 words with synonyms & antonyms.");
-        }
+  const initializeGame = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError("");
 
-        const shuffledBank = shuffleArray(validData);
-        const selectedQuestions = shuffledBank.slice(0, MAX_QUESTIONS);
+      const data = await getWords();
 
-        const matchData = selectedQuestions.map((q) => {
-          const isSynonym = Math.random() > 0.5;
-          const questionType = isSynonym ? "synonym" : "antonym";
-          const correctAnswer = isSynonym ? q.synonyms[0] : q.antonyms[0];
+      const validData = data.filter(
+        (w) => w.synonyms?.length && w.antonyms?.length
+      );
 
-          const wrongOptions = validData
-            .filter(item => item.word !== q.word)
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 3)
-            .map(item => isSynonym ? item.synonyms[0] : item.antonyms[0]);
+      if (validData.length < 4) {
+        throw new Error("Need at least 4 words with synonyms & antonyms.");
+      }
 
-          const allOptions = shuffleArray([correctAnswer, ...wrongOptions]);
+      const shuffledBank = shuffleArray(validData);
+      const selectedQuestions = shuffledBank.slice(0, MAX_QUESTIONS);
 
-          return {
-            ...q,
-            questionType,
-            answer: correctAnswer,
-            options: allOptions
-          };
-        });
+      const matchData = selectedQuestions.map((q) => {
+        const isSynonym = Math.random() > 0.5;
+        const questionType = isSynonym ? "synonym" : "antonym";
+        const correctAnswer = isSynonym ? q.synonyms[0] : q.antonyms[0];
 
-        setQuestions(matchData);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError("Need at least 4 saved words with synonyms & antonyms to start.");
-        console.log(err);
-        setLoading(false);
+        const wrongOptions = validData
+          .filter((item) => item.word !== q.word)
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 3)
+          .map((item) => (isSynonym ? item.synonyms[0] : item.antonyms[0]));
+
+        const allOptions = shuffleArray([correctAnswer, ...wrongOptions]);
+
+        return {
+          ...q,
+          questionType,
+          answer: correctAnswer,
+          options: allOptions,
+        };
       });
+
+      setQuestions(matchData);
+
+      setCurrent(0);
+      setSelected(null);
+      setScore(0);
+      setFinished(false);
+    } catch (err) {
+      setError(
+        "Need at least 4 saved words with synonyms & antonyms to start.",
+      );
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    initializeGame();
+  }, [initializeGame]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -100,13 +113,12 @@ function Synonym_Antonym() {
 
   if (loading) return <p className="quiz-status">Loading quiz...</p>;
   if (error) return <p className="quiz-status">{error}</p>;
-  
+
   if (questions.length === 0)
     return <p className="quiz-status">Not enough words to generate a quiz.</p>;
 
-  const isPerfect = score === questions.length;
-
   if (finished) {
+    const isPerfect = score === questions.length;
     const result = evaluateResult(score, questions.length);
 
     return (
@@ -134,8 +146,12 @@ function Synonym_Antonym() {
         </p>
 
         <div className="quiz-finished-btns">
-          <button className="back-btn" onClick={() => window.location.reload()}>Try Again</button>
-          <button className="back-btn" onClick={() => navigate("/quiz")}>Back to Quiz Menu</button>
+          <button className="back-btn" onClick={initializeGame}>
+            Play Again
+          </button>
+          <button className="back-btn" onClick={() => navigate("/quiz")}>
+            Back to Quiz Menu
+          </button>
         </div>
       </div>
     );
@@ -146,16 +162,31 @@ function Synonym_Antonym() {
   return (
     <div className="quiz-container">
       <div className="quiz-progress">
-        <span>{current + 1} / {questions.length}</span>
+        <span>
+          {current + 1} / {questions.length}
+        </span>
         <span>Score: {score}</span>
       </div>
 
       <div className="quiz-card">
-        <p className="quiz-hint" style={{ borderTop: 'none', paddingTop: 0, paddingBottom: '10px', fontSize: '15px' }}>
+        <p
+          className="quiz-hint"
+          style={{
+            borderTop: "none",
+            paddingTop: 0,
+            paddingBottom: "10px",
+            fontSize: "15px",
+          }}
+        >
           Find the <strong>{q.questionType}</strong> for:
         </p>
-        <h3 className="quiz-sentence" style={{ fontSize: '28px', fontWeight: 'bold' }}>{q.word}</h3>
-        
+        <h3
+          className="quiz-sentence"
+          style={{ fontSize: "28px", fontWeight: "bold" }}
+        >
+          {q.word}
+        </h3>
+
         {selected && (
           <p className="quiz-hint">
             <strong>Definition:</strong> {q.definition}
