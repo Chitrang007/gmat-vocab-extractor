@@ -1,3 +1,4 @@
+import { getAboveAverageAchievement, getAverageAchievement, getPerfectAchievement } from "./achievementMessages"
 import { getRandomRoast } from "./roastMessages"
 import { resultAssets } from "./resultAssets"
 
@@ -14,6 +15,11 @@ export interface GameResult {
   image?: string
 }
 
+function getRandomAsset(category: keyof typeof resultAssets) {
+  const assets = resultAssets[category];
+  return assets[Math.floor(Math.random() * assets.length)];
+}
+
 export function evaluateResult(
   score: number,
   totalQuestions: number
@@ -24,7 +30,8 @@ export function evaluateResult(
     return {
       ratio,
       category: "perfect",
-      message: "Perfect score!",
+      message: getPerfectAchievement(),
+      image: getRandomAsset("perfect"),
     }
   }
 
@@ -32,7 +39,8 @@ export function evaluateResult(
     return {
       ratio,
       category: "great",
-      message: "Great job!",
+      message: getAboveAverageAchievement(),
+      image: getRandomAsset("great"),
     }
   }
 
@@ -40,7 +48,8 @@ export function evaluateResult(
     return {
       ratio,
       category: "average",
-      message: "Keep Practicing!",
+      message: getAverageAchievement(),
+      image: getRandomAsset("average"),
     }
   }
 
@@ -48,6 +57,6 @@ export function evaluateResult(
     ratio,
     category: "roasted",
     message: getRandomRoast(),
-    image: resultAssets.roasted,
+    image: getRandomAsset("roasted"),
   }
 }
