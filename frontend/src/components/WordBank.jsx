@@ -28,6 +28,10 @@ function WordBank({ words, onClose }) {
       ? words
       : words.filter((w) => w.difficulty === filter.toLowerCase());
 
+  const sortedWords = [...filteredWords].sort((a, b) =>
+    a.word.localeCompare(b.word)
+  )
+
   return (
     <div className="wordbank-container">
       <div className="wordbank-header">
@@ -70,7 +74,7 @@ function WordBank({ words, onClose }) {
         </div>
       </div>
       <div className="wordbank-list">
-        {filteredWords.map((word, i) => (
+        {sortedWords.map((word, i) => (
           <div key={i} className="wordbank-item">
             <div className="wordbank-header-top">
               <span className="wordbank-word">{word.word}</span>
