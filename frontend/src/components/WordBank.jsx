@@ -9,10 +9,12 @@ function WordBank({ words, onClose }) {
     return (
       <div className="wordbank-container">
         <div className="wordbank-header">
-          <h2>Word Bank</h2>
-          <button className="close-btn" onClick={onClose}>
-            Back
-          </button>
+          <div className="wordbank-header-top">
+            <h2>Word Bank</h2>
+            <button className="close-btn" onClick={onClose}>
+              Back
+            </button>
+          </div>
         </div>
         <p className="wordbank-empty">
           No words saved yet. Extract a passage and save some words!
