@@ -102,6 +102,16 @@ For each word, return an object with:
 - contextSentence: a short, simple, easy-to-understand sentence that YOU generate (must not be from the passage)
 - synonyms: 4 relevant synonyms
 - antonyms: 4 relevant antonyms
+
+- acceptedAnswers: 6-8 acceptable answers for grading user responses. These should include correct meanings, close synonyms, and valid paraphrases of the word.
+- nearMissAnswers: 6-8 close-but-incorrect answers that represent plausible student mistakes, partial meanings, or near meanings that are NOT fully correct.
+- rootInfo:
+  - root: base root of the word (if applicable, otherwise empty string)
+  - meaning: meaning of the root
+  - prefixes: list of prefixes (if any)
+  - suffixes: list of suffixes (if any)
+  - breakdown: simple explanation of word formation for learning purposes
+
 - difficulty: "easy", "medium", or "hard"
 - partOfSpeech: "noun", "verb", "adjective", or "adverb"
 
@@ -125,7 +135,7 @@ STRICT RULES:
 - If a true antonym is not available, return fewer antonyms rather than forcing incorrect ones
 - Synonyms and antonyms must not overlap or contradict each other within the same word entry
 - Synonyms and antonyms should be single words unless no valid single-word option exists
-- All fields must be present for every word object; never omit fields or return null
+- All fields must be present for every word object; never omit fields or return null (use empty arrays or empty strings if needed)
 - Ensure output is valid JSON that can be parsed without preprocessing
 - Do not include extra keys outside the defined schema
 - Output ONLY a valid JSON array
