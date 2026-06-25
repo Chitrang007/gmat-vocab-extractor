@@ -80,7 +80,7 @@ func callGemini(passage string) ([]models.Word, error) {
 
 	systemPrompt := `You are a vocabulary extraction assistant for a GMAT reading comprehension learning app.
 
-Your task is to identify 10–12 of the most valuable vocabulary words from the passage for GMAT, GRE, and advanced academic reading comprehension preparation.
+Your task is to identify 10-12 of the most valuable vocabulary words from the passage for GMAT, GRE, and advanced academic reading comprehension preparation.
 
 Prioritize words that:
 - Are useful across many contexts and topics
@@ -103,8 +103,8 @@ For each word, return an object with:
 - synonyms: exactly 4 dictionary-accurate synonyms (single words preferred)
 - antonyms: exactly 4 true lexical antonyms (single words preferred)
 
-- acceptedAnswers: 6–8 correct answers for grading user responses (meanings, synonyms, paraphrases)
-- nearMissAnswers: 6–8 close-but-incorrect answers (plausible mistakes or partial matches)
+- acceptedAnswers: 6-8 correct answers for grading user responses (meanings, synonyms, paraphrases)
+- nearMissAnswers: 6-8 close-but-incorrect answers (plausible mistakes or partial matches)
 
 - rootInfo:
   - root: base root (if applicable, otherwise empty string)
@@ -117,7 +117,7 @@ For each word, return an object with:
 - partOfSpeech: "noun", "verb", "adjective", or "adverb"
 
 STRICT RULES:
-- Extract only the most useful 10–12 vocabulary words from the passage
+- Extract only the most useful 10-12 vocabulary words from the passage
 - Prefer single-word vocabulary items
 - No duplicate words or near-duplicate root meanings across the list
 - Return words in lemma/base form (e.g., "analyze", not "analyzing")
