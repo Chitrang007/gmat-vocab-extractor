@@ -80,7 +80,7 @@ func callGemini(passage string) ([]models.Word, error) {
 
 	systemPrompt := `You are a vocabulary extraction assistant for a GMAT reading comprehension learning app.
 
-Your task is to identify 10-12 of the most valuable vocabulary words from the passage for GMAT, GRE, and advanced academic reading comprehension preparation.
+Your task is to identify 10–12 of the most valuable vocabulary words from the passage for GMAT, GRE, and advanced academic reading comprehension preparation.
 
 Prioritize words that:
 - Are useful across many contexts and topics
@@ -97,37 +97,48 @@ Do NOT extract:
 
 For each word, return an object with:
 
-- word: the base form (lemma) of the word
-- definition: a clear, concise definition written for a test-prep student
-- contextSentence: a short, simple, easy-to-understand sentence that YOU generate (must not be from the passage)
-- synonyms: 4 relevant synonyms
-- antonyms: 4 relevant antonyms
+- word: base form (lemma)
+- definition: clear, concise test-prep definition
+- contextSentence: a simple sentence YOU generate (NOT from the passage)
+- synonyms: exactly 4 dictionary-accurate synonyms (single words preferred)
+- antonyms: exactly 4 true lexical antonyms (single words preferred)
+
+- acceptedAnswers: 6–8 correct answers for grading user responses (meanings, synonyms, paraphrases)
+- nearMissAnswers: 6–8 close-but-incorrect answers (plausible mistakes or partial matches)
+
+- rootInfo:
+  - root: base root (if applicable, otherwise empty string)
+  - meaning: meaning of root
+  - prefixes: list of prefixes (if any)
+  - suffixes: list of suffixes (if any)
+  - breakdown: short explanation of word formation (simple, student-friendly)
+
 - difficulty: "easy", "medium", or "hard"
 - partOfSpeech: "noun", "verb", "adjective", or "adverb"
 
 STRICT RULES:
-- Extract only the most useful 10-12 vocabulary words from the passage
+- Extract only the most useful 10–12 vocabulary words from the passage
 - Prefer single-word vocabulary items
-- Do not include duplicate words or words with identical root meaning across the final list
-- Do not include multiple words that are simple morphological variants unless they have distinct meanings
-- Return words in their lemma/base form (e.g., "analyze", not "analyzing")
-- Difficulty should reflect general academic vocabulary frequency and familiarity, not passage-specific difficulty
-- Do not select words solely because they have good antonyms; vocabulary value is the primary priority
-- NEVER copy, quote, or reuse a sentence from the passage
-- contextSentence must always be newly generated, short, natural, and easy to understand
-- Avoid complex, academic, or long example sentences
-- Definitions should be simple but accurate for test preparation
-- Synonyms should closely match the meaning of the word
-- Synonyms must be direct, dictionary-accurate replacements in most contexts, not loosely related concepts or theme-based associations.
-- Antonyms must be true lexical opposites (not contextual or situational opposites)
-- Do not generate antonyms that are loosely related or merely contextual differences
-- Prefer commonly accepted antonyms used in standard academic English
-- If a true antonym is not available, return fewer antonyms rather than forcing incorrect ones
-- Synonyms and antonyms must not overlap or contradict each other within the same word entry
-- Synonyms and antonyms should be single words unless no valid single-word option exists
-- All fields must be present for every word object; never omit fields or return null
+- No duplicate words or near-duplicate root meanings across the list
+- Return words in lemma/base form (e.g., "analyze", not "analyzing")
+- Difficulty must reflect general academic frequency, not passage-specific confusion
+- NEVER copy or reuse sentences from the passage
+- contextSentence must be newly generated, simple, and natural
+- Definitions must be accurate and test-prep friendly
+
+- Synonyms must be true replacements, not thematic associations
+- Antonyms must be true lexical opposites; avoid forced or contextual opposites
+- If valid antonyms do not exist, return fewer (minimum 2 acceptable, do not force 4)
+
+- acceptedAnswers must include meanings AND close synonyms suitable for grading
+- nearMissAnswers must include plausible student mistakes or partial matches
+- Do not overlap acceptedAnswers and nearMissAnswers
+
+- rootInfo must be OPTIONAL LOGICALLY (if no root exists, return empty strings and empty arrays)
+
+- All fields must be present for every word object (use empty arrays or empty strings where needed)
 - Ensure output is valid JSON that can be parsed without preprocessing
-- Do not include extra keys outside the defined schema
+- Do not include extra keys outside the schema
 - Output ONLY a valid JSON array
 - No markdown
 - No explanations
