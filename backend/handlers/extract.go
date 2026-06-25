@@ -97,21 +97,20 @@ Do NOT extract:
 
 For each word, return an object with:
 
-- word: base form (lemma)
-- definition: clear, concise test-prep definition
-- contextSentence: a simple sentence YOU generate (NOT from the passage)
-- synonyms: exactly 4 dictionary-accurate synonyms (single words preferred)
-- antonyms: exactly 4 true lexical antonyms (single words preferred)
+- word: the base form (lemma) of the word
+- definition: a clear, concise definition written for a test-prep student
+- contextSentence: a short, simple, easy-to-understand sentence that YOU generate (must not be from the passage)
+- synonyms: 4 relevant synonyms
+- antonyms: 4 relevant antonyms
 
-- acceptedAnswers: 6-8 correct answers for grading user responses (meanings, synonyms, paraphrases)
-- nearMissAnswers: 6-8 close-but-incorrect answers (plausible mistakes or partial matches)
-
+- acceptedAnswers: 6-8 acceptable answers for grading user responses. These should include correct meanings, close synonyms, and valid paraphrases of the word.
+- nearMissAnswers: 6-8 close-but-incorrect answers that represent plausible student mistakes, partial meanings, or near meanings that are NOT fully correct.
 - rootInfo:
-  - root: base root (if applicable, otherwise empty string)
-  - meaning: meaning of root
+  - root: base root of the word (if applicable, otherwise empty string)
+  - meaning: meaning of the root
   - prefixes: list of prefixes (if any)
   - suffixes: list of suffixes (if any)
-  - breakdown: short explanation of word formation (simple, student-friendly)
+  - breakdown: simple explanation of word formation for learning purposes
 
 - difficulty: "easy", "medium", or "hard"
 - partOfSpeech: "noun", "verb", "adjective", or "adverb"
@@ -119,26 +118,26 @@ For each word, return an object with:
 STRICT RULES:
 - Extract only the most useful 10-12 vocabulary words from the passage
 - Prefer single-word vocabulary items
-- No duplicate words or near-duplicate root meanings across the list
-- Return words in lemma/base form (e.g., "analyze", not "analyzing")
-- Difficulty must reflect general academic frequency, not passage-specific confusion
-- NEVER copy or reuse sentences from the passage
-- contextSentence must be newly generated, simple, and natural
-- Definitions must be accurate and test-prep friendly
-
-- Synonyms must be true replacements, not thematic associations
-- Antonyms must be true lexical opposites; avoid forced or contextual opposites
-- If valid antonyms do not exist, return fewer (minimum 2 acceptable, do not force 4)
-
-- acceptedAnswers must include meanings AND close synonyms suitable for grading
-- nearMissAnswers must include plausible student mistakes or partial matches
-- Do not overlap acceptedAnswers and nearMissAnswers
-
-- rootInfo must be OPTIONAL LOGICALLY (if no root exists, return empty strings and empty arrays)
-
-- All fields must be present for every word object (use empty arrays or empty strings where needed)
+- Do not include duplicate words or words with identical root meaning across the final list
+- Do not include multiple words that are simple morphological variants unless they have distinct meanings
+- Return words in their lemma/base form (e.g., "analyze", not "analyzing")
+- Difficulty should reflect general academic vocabulary frequency and familiarity, not passage-specific difficulty
+- Do not select words solely because they have good antonyms; vocabulary value is the primary priority
+- NEVER copy, quote, or reuse a sentence from the passage
+- contextSentence must always be newly generated, short, natural, and easy to understand
+- Avoid complex, academic, or long example sentences
+- Definitions should be simple but accurate for test preparation
+- Synonyms should closely match the meaning of the word
+- Synonyms must be direct, dictionary-accurate replacements in most contexts, not loosely related concepts or theme-based associations.
+- Antonyms must be true lexical opposites (not contextual or situational opposites)
+- Do not generate antonyms that are loosely related or merely contextual differences
+- Prefer commonly accepted antonyms used in standard academic English
+- If a true antonym is not available, return fewer antonyms rather than forcing incorrect ones
+- Synonyms and antonyms must not overlap or contradict each other within the same word entry
+- Synonyms and antonyms should be single words unless no valid single-word option exists
+- All fields must be present for every word object; never omit fields or return null (use empty arrays or empty strings if needed)
 - Ensure output is valid JSON that can be parsed without preprocessing
-- Do not include extra keys outside the schema
+- Do not include extra keys outside the defined schema
 - Output ONLY a valid JSON array
 - No markdown
 - No explanations
