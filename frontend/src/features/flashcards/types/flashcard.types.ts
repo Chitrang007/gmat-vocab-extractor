@@ -4,6 +4,8 @@ export interface Word {
   contextSentence: string
   synonyms: string[]
   antonyms: string[]
+  acceptedAnswers: string[]
+  nearMissAnswers: string[]
   difficulty: string
   partOfSpeech: string
 }
@@ -24,7 +26,13 @@ export type GamePhase =
   | 'finished'
   | 'error'
 
-export type MatchType = 'exact' | 'synonym' | 'fuzzy' | 'none'
+export type MatchType = 
+  | 'exact'
+  | 'accepted'
+  | 'synonym'
+  | 'nearMiss'
+  | 'fuzzy'
+  | 'none'
 
 export interface ModeDefinition {
   id: ModeId
