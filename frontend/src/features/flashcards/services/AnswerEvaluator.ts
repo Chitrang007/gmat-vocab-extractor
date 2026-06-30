@@ -42,7 +42,7 @@ function buildFeedback(
     return "Perfect match!";
   }
   if (matchType === "accepted") {
-    return "Correct! Accepted definition.";
+    return `Correct! Your answer is accepted. The expected answer is "${expected}".`;
   }
   if (matchType === "synonym") {
     return "Accepted as a valid synonym.";

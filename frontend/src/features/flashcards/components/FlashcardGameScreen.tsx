@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../../../components/QuizMenu.css'
 import { ROUND_DURATION_MS } from '../constants/gameConfig'
@@ -26,6 +26,31 @@ export function FlashcardGameScreen() {
     setTextAnswer('')
     game.actions.nextRound()
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Enter') return
+
+      if (game.phase === 'playing') return
+
+      if (game.phase === 'feedback') {
+        event.preventDefault()
+        handleNext()
+      }
+
+      if (game.phase === 'finished') {
+        event.preventDefault()
+        setTextAnswer('')
+        void game.actions.restartSession()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [game.phase, handleNext, game.actions])
 
   if (game.phase === 'loading' || game.phase === 'idle') {
     return <p className="quiz-status">Loading flashcards…</p>
